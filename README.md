@@ -31,8 +31,7 @@ https://github.com/laohei7/HeiTuBe.git
 ## 注意事项
 
 1. 运行 `Android` 模块时，注意将 `HomeViewmodel` 中的 `host` 改为你本机的 ip。
-2. 网络图片加载统一使用 `Server` 模块代理返回 byte，没有进行优化，图片加载会有些卡顿，实体机上 Desktop 和 Android
-   效果总体还可以。Web 加载时会有些问题，加载完成后整体效果还可以。
+2. 网络图片加载统一使用 `Server` 模块代理，解决 Web 跨域问题
 3. 运行时，如果未显示数据，检查 Server 模块日志，是否是 Json 映射异常，如果是，在 `shared` 模块的 `BiliHots`
    找到对应字段进行修改，一般添加个默认值即可。
 

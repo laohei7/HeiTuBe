@@ -1,6 +1,5 @@
 package com.laohei.heitube.presentation.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.CircleShape
@@ -13,16 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil3.compose.rememberAsyncImagePainter
-import heitube.composeapp.generated.resources.Res
-import heitube.composeapp.generated.resources.icon_assist
+import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 
 internal fun LazyGridState.reachedBottom(buffer: Int = 1): Boolean {
     val lastVisibleItem = this.layoutInfo.visibleItemsInfo.lastOrNull()
@@ -68,19 +63,24 @@ fun HomePage(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 AsyncImage(
+                    model = video.pic,
+                    contentDescription = video.bvid,
                     modifier = Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(10.dp)),
-                    url = video.pic,
-                    label = video.bvid
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.FillBounds,
                 )
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     AsyncImage(
+                        model = video.owner.face,
+                        contentDescription =video.owner.name,
                         modifier = Modifier.size(36.dp).clip(CircleShape),
-                        url = video.owner.face,
-                        label = video.owner.name
+                        alignment = Alignment.Center,
+                        contentScale = ContentScale.Fit,
                     )
+
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
@@ -127,46 +127,4 @@ fun HomePage(
     }
 }
 
-@Composable
-private fun AsyncImage(
-    modifier: Modifier = Modifier,
-    url: String,
-    label: String
-) {
-    var imageLoadResult by remember {
-        mutableStateOf<Result<Painter>?>(null)
-    }
 
-    val painter = rememberAsyncImagePainter(
-        model = url,
-        onSuccess = {
-            imageLoadResult =
-                if (it.painter.intrinsicSize.width > 1 && it.painter.intrinsicSize.height > 1) {
-                    Result.success(it.painter)
-                } else {
-                    Result.failure(Exception("Invalid image size"))
-                }
-        },
-        onError = {
-            it.result.throwable.printStackTrace()
-            imageLoadResult = Result.failure(it.result.throwable)
-        }
-    )
-    when (val result = imageLoadResult) {
-        null -> {}
-        else -> {
-            Image(
-                painter = if (result.isSuccess) painter else {
-                    painterResource(Res.drawable.icon_assist)
-                },
-                contentDescription = label,
-                contentScale = if (result.isSuccess) {
-                    ContentScale.Crop
-                } else {
-                    ContentScale.Fit
-                },
-                modifier = modifier
-            )
-        }
-    }
-}

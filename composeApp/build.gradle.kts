@@ -80,7 +80,6 @@ kotlin {
             implementation(libs.bundles.coil)
 
 //            implementation(libs.kotlinx.datetime)
-            implementation(libs.uri.kmp)
             implementation(projects.shared)
         }
         desktopMain.dependencies {
