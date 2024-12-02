@@ -5,6 +5,35 @@
             "name": "Gradle configuration",
             "tasks": ["kotlinUpgradeYarnLock"],
         },
+        {
+            "name": "Build HeiTuBe",
+            "type": "gradle",
+            "workingDir": "$PROJECT_DIR$",
+            "tasks": [":server:classes"],
+            "initScripts": {
+                "flmapper": "ext.mapPath = { path -> path }",
+                "Build HeiTuBe": "System.setProperty('org.gradle.java.compile-classpath-packaging', 'true')"
+            }
+        },
+        {
+            "name": "server [Main] (1)",
+            "type": "jps-run",
+            "workingDir": "$PROJECT_DIR$",
+            "dependsOn": ["Build HeiTuBe"],
+            "mainClass": "com.laohei.heitube.ApplicationKt",
+            "module": "HeiTuBe.server.main",
+            "options": ["-Dfile.encoding=UTF-8"]
+        },
+        {
+            "name": "composeApp [WasmJs] (1)",
+            "type": "gradle",
+            "workingDir": "$PROJECT_DIR$",
+            "tasks": ["wasmJsBrowserDevelopmentRun"],
+            "args": ["-p", "$PROJECT_DIR$/composeApp"],
+            "initScripts": {
+                "flmapper": "ext.mapPath = { path -> path }"
+            }
+        }
 
     ]
 }

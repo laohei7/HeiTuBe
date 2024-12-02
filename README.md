@@ -1,43 +1,61 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop, Server.
+这是一个 Kotlin Multiplatform 项目：Android, iOS（暂无设备适配，不清楚具体运行情况）, Web, Desktop, Server。
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+## 运行项目
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+在运行项目前，注意项目环境的配置（Desktop 使用 openjdk 17）
 
-* `/server` is for the Ktor server application.
+1. 克隆项目到本地，使用 Android Studio 或者 Fleet 打开项目，等待所需依赖加载。
 
-* `/shared` is for the code that will be shared between all targets in the project.
-  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
-
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
-
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
-
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
-
-
-```shell
-https://api.bilibili.com/x/web-interface/popular?ps=20&pn=1&web_location=333.934&w_rid=ec1587b1f3ffa9e187a83393703e2073&wts=1733067033
-
-
-https://api.bilibili.com/x/web-interface/popular?ps=20&pn=2&web_location=333.934&w_rid=a9cf7d03f1e321c6446cc07aff3617b9&wts=1733067144
-
-
-https://api.bilibili.com/x/web-interface/popular?ps=20&pn=3&web_location=333.934&w_rid=61e8f13ab53ac84a17089b03b94ffd9a&wts=1733067145
-
-
-https://api.bilibili.com/x/web-interface/popular?ps=20&pn=4&web_location=333.934&w_rid=671726e45552f774020f7f2a099a3f92&wts=1733067150
-
-
-https://api.bilibili.com/x/web-interface/popular?ps=20&pn=5&web_location=333.934&w_rid=258d247bf6306a6880c03aebb0052296&wts=1733067159
 ```
+https://github.com/laohei7/HeiTuBe.git
+```
+
+2. 先启动 Server 模块，确保代理服务正常运行。
+
+```
+./gradlew :server:run
+```
+
+3. 启动 UI 各模块。
+
+```
+# Desktop
+./gradlew :composeApp:run
+
+# Web
+./gradlew :composeApp:wasmJsBrowserRun
+```
+
+运行 Android 模块， 在 Android Studio 或 Fleet 中，按正常 Android 项目运行即可。
+
+## 注意事项
+
+1. 运行 `Android` 模块时，注意将 `HomeViewmodel` 中的 `host` 改为你本机的 ip。
+2. 网络图片加载统一使用 `Server` 模块代理返回 byte，没有进行优化，图片加载会有些卡顿，实体机上 Desktop 和 Android
+   效果总体还可以。Web 加载时会有些问题，加载完成后整体效果还可以。
+3. 运行时，如果未显示数据，检查 Server 模块日志，是否是 Json 映射异常，如果是，在 `shared` 模块的 `BiliHots`
+   找到对应字段进行修改，一般添加个默认值即可。
+
+## 运行效果
+
+### Android
+
+<p align="center">
+    <img src="./doc/images/android_1.png" alt="Image 1" width="300"/>
+    <img src="./doc/images/android_2.png" alt="Image 2" width="300"/>
+</p>
+
+### Desktop（Ubuntu）
+
+![](./doc/images/linux_1.png)
+
+<p align="center">
+    <img src="./doc/images/linux_2.png" alt="Image 2" width="300"/>
+    <img src="./doc/images/linux_3.png" alt="Image 2" width="300"/>
+</p>
+
+### Web
+
+![](./doc/images/web_1.png)
+
+
