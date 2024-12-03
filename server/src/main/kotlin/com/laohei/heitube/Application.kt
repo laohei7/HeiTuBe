@@ -1,9 +1,10 @@
 package com.laohei.heitube
 
 import com.laohei.heitube.domain.ApiResponse
+import com.laohei.heitube.domain.Hots
+import com.laohei.heitube.domain.VideoInfo
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.client.request.*
@@ -53,12 +54,29 @@ fun Application.module() {
         }
         get("/proxy") {
             val pn = call.queryParameters["pn"]
-            // 代理到 Bilibili API
             val response = client.get("https://api.bilibili.com/x/web-interface/popular?ps=20&pn=$pn") {
                 headers.append(HttpHeaders.UserAgent, "K/3.0")
             }
-
-            val result = response.body<ApiResponse>()
+            val result = response.body<ApiResponse<Hots>>()
+            response.headers.forEach { key, values ->
+                values.forEach { value ->
+                    call.response.headers.append(key, value)
+                }
+            }
+            call.respond(result)
+        }
+        get("proxy-video") {
+            val avid = call.queryParameters["avid"]
+            val bvid = call.queryParameters["bvid"]
+            val cid = call.queryParameters["cid"]
+            val qn = call.queryParameters["qn"] ?: "80"
+            val response =
+                client.get(
+                    "https://api.bilibili.com/x/player/wbi/playurl?avid=$avid&bvid=$bvid&cid=$cid&qn=0&fnver=0&fnval=4048&fourk=1&gaia_source=&from_client=BROWSER&is_main_page=true&need_fragment=false&isGaiaAvoided=false&session=33e1a32c776a41aa79589202b6de7c07&voice_balance=1&web_location=1315873&dm_img_list=[]&dm_img_str=V2ViR0wgMS4wIChPcGVuR0wgRVMgMi4wIENocm9taXVtKQ&dm_cover_img_str=QU5HTEUgKE5WSURJQSBDb3Jwb3JhdGlvbiwgTlZJRElBIEdlRm9yY2UgR1RYIDEwNTAgVGkvUENJZS9TU0UyLCBPcGVuR0wgNC41LjApR29vZ2xlIEluYy4gKE5WSURJQSBDb3Jwb3JhdGlvbi&dm_img_inter=%7B%22ds%22:[],%22wh%22:[4607,4634,61],%22of%22:[28,56,28]%7D&w_rid=f0bf7527e9879001d7a0e4491910d6d8&wts=1733160345"
+                ) {
+                    headers.append(HttpHeaders.UserAgent, "K/3.0")
+                }
+            val result = response.body<ApiResponse<VideoInfo>>()
             response.headers.forEach { key, values ->
                 values.forEach { value ->
                     call.response.headers.append(key, value)
@@ -73,11 +91,6 @@ fun Application.module() {
                 val imageResponse = client.get(imageUrl) {
                     headers.append(HttpHeaders.UserAgent, "K/3.0")
                 }
-//                imageResponse.headers.forEach { key, values ->
-//                    values.forEach { value ->
-//                        call.response.headers.append(key, value)
-//                    }
-//                }
                 call.respondBytes(imageResponse.bodyAsBytes())
             }
 
