@@ -3,16 +3,9 @@ package com.laohei.heitube.domain
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
-data class ApiResponse(
-    val code: Int,
-    val message: String,
-    val ttl: Int,
-    val data: Data
-)
 
 @Serializable
-data class Data(
+data class Hots(
     val list: List<VideoItem>
 )
 
