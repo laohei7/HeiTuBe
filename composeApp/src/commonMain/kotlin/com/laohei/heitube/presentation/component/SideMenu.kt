@@ -82,9 +82,9 @@ fun SideMenuList(
         modifier = Modifier.width(260.dp).padding(paddingValues)
     ) {
         items(menus) {
-            MenuItem(
-                icon = it.first,
+              SideMenuItem(
                 label = it.second,
+                icon = it.first,
                 selected = select == it.first,
                 onClick = { select = it.first }
             )
@@ -115,9 +115,9 @@ fun SideMenuList(
         }
 
         items(myMenus) {
-            MenuItem(
-                icon = it.first,
+              SideMenuItem(
                 label = it.second,
+                icon = it.first,
                 selected = select == it.first,
                 onClick = { select = it.first }
             )
@@ -125,14 +125,16 @@ fun SideMenuList(
 
         item { Divier() }
         item { GroupTitle("Subscribe") }
+
         item { Divier() }
         item { GroupTitle("Explore") }
+        
         item { Divier() }
 
         items(otherMenus) {
-            MenuItem(
-                icon = it.first,
+            SideMenuItem(
                 label = it.second,
+                icon = it.first,
                 selected = select == it.first,
                 onClick = { select = it.first }
             )
@@ -155,25 +157,13 @@ private fun GroupTitle(title: String) {
 }
 
 @Composable
-private fun Divier() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(22.dp)
-            .padding(horizontal = 15.dp, vertical = 10.dp)
-            .background(color = Color.LightGray.copy(alpha = 0.5f))
-            .clip(CircleShape)
-    )
-}
-
-@Composable
-private fun MenuItem(
-    icon: DrawableResource,
+private fun SideMenuItem(
     label: String,
+    icon: DrawableResource,
     selected: Boolean,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
-    Row(
+    MenuItem(
         modifier = Modifier
             .height(50.dp)
             .fillMaxWidth()
@@ -184,6 +174,33 @@ private fun MenuItem(
                 if (selected) Color.LightGray.copy(alpha = 0.5f) else Color.White
             )
             .padding(horizontal = 20.dp, vertical = 5.dp),
+        icon = icon,
+        label = label,
+    )
+}
+
+@Composable
+fun Divier(
+    paddingValues: PaddingValues = PaddingValues(horizontal = 15.dp, vertical = 10.dp)
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(22.dp)
+            .padding(paddingValues)
+            .background(color = Color.LightGray.copy(alpha = 0.5f))
+            .clip(CircleShape)
+    )
+}
+
+@Composable
+fun MenuItem(
+    modifier: Modifier = Modifier,
+    icon: DrawableResource,
+    label: String,
+) {
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
