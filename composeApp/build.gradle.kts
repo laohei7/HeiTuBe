@@ -33,6 +33,25 @@ kotlin {
 
     jvm("desktop")
 
+    js(IR) {
+        moduleName = "composeApp"
+        browser {
+            val rootDirPath = project.rootDir.path
+            val projectDirPath = project.projectDir.path
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    static = (static ?: mutableListOf()).apply {
+                        // Serve sources to debug inside browser
+                        add(rootDirPath)
+                        add(projectDirPath)
+                    }
+                }
+            }
+        }
+        binaries.executable()
+    }
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
@@ -79,7 +98,8 @@ kotlin {
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
 
-//            implementation(libs.kotlinx.datetime)
+
+            implementation(libs.kotlinx.datetime)
             implementation(projects.shared)
         }
         desktopMain.dependencies {
@@ -89,6 +109,14 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+        }
+        jsMain.dependencies {
+            implementation(compose.html.core)
+            implementation(compose.runtime)
+            implementation(kotlin("stdlib"))
+        }
+        wasmJsMain.dependencies {
+            implementation(kotlin("stdlib"))
         }
     }
 }
@@ -107,8 +135,11 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "lib/arm64-v8a/libandroidx.graphics.path.so"
+            excludes += "lib/armeabi-v7a/libandroidx.graphics.path.so"
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false

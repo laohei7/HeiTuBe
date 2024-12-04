@@ -23,6 +23,12 @@ kotlin {
 
     jvm()
 
+    js(IR) {
+        browser {
+            binaries.executable()
+        }
+    }
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser {
@@ -47,6 +53,8 @@ kotlin {
 //            implementation(libs.ktor.client.serialization)
 //            implementation(libs.ktor.client.json)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
+
 
         }
     }
