@@ -38,20 +38,20 @@ sealed class TuBeTopBarAction {
 
 
 private val userMenus = listOf(
-    Triple(Res.drawable.icon_google, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_account_switch, Res.string.str_add_to_playlist, Res.drawable.icon_arrow_right),
-    Triple(Res.drawable.icon_exit, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_workspace, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_coin, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_personal_data, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_skin, Res.string.str_add_to_playlist, Res.drawable.icon_arrow_right),
-    Triple(Res.drawable.icon_language, Res.string.str_add_to_playlist, Res.drawable.icon_arrow_right),
-    Triple(Res.drawable.icon_limited, Res.string.str_add_to_playlist, Res.drawable.icon_arrow_right),
-    Triple(Res.drawable.icon_location, Res.string.str_add_to_playlist, Res.drawable.icon_arrow_right),
-    Triple(Res.drawable.icon_keyboard, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_setting, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_assist, Res.string.str_add_to_playlist, null),
-    Triple(Res.drawable.icon_feedback, Res.string.str_add_to_playlist, null),
+    Triple(Res.drawable.icon_google, Res.string.str_google_account, null),
+    Triple(Res.drawable.icon_account_switch, Res.string.str_account_switch, Res.drawable.icon_arrow_right),
+    Triple(Res.drawable.icon_exit, Res.string.str_exit_switch, null),
+    Triple(Res.drawable.icon_workspace, Res.string.str_workspace, null),
+    Triple(Res.drawable.icon_coin, Res.string.str_member, null),
+    Triple(Res.drawable.icon_personal_data, Res.string.str_personal_data, null),
+    Triple(Res.drawable.icon_skin, Res.string.str_skin, Res.drawable.icon_arrow_right),
+    Triple(Res.drawable.icon_language, Res.string.str_language, Res.drawable.icon_arrow_right),
+    Triple(Res.drawable.icon_limited, Res.string.str_limited_mode, Res.drawable.icon_arrow_right),
+    Triple(Res.drawable.icon_location, Res.string.str_location, Res.drawable.icon_arrow_right),
+    Triple(Res.drawable.icon_keyboard, Res.string.str_keyboard, null),
+    Triple(Res.drawable.icon_setting, Res.string.str_setting, null),
+    Triple(Res.drawable.icon_assist, Res.string.str_assist, null),
+    Triple(Res.drawable.icon_feedback, Res.string.str_feedback, null),
 )
 
 
@@ -197,7 +197,7 @@ fun TuBeTopBar(
                         modifier = Modifier.size(36.dp).clip(CircleShape).clickable {
                             isExpanded = true
                         }.align(Alignment.CenterEnd),
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.Crop
                     )
 
                     ExposedDropdownMenu(
@@ -227,7 +227,7 @@ fun TuBeTopBar(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxHeight().align(Alignment.CenterEnd)
-                        .padding(end = 80.dp),
+                        .padding(end = 65.dp),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     if (!showSearchField) {
@@ -272,7 +272,7 @@ private fun UserCard() {
             painter = painterResource(Res.drawable.icon_profile_photo),
             contentDescription = null,
             modifier = Modifier.size(46.dp).clip(CircleShape),
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.Crop
         )
         Column {
             Text(
@@ -285,6 +285,7 @@ private fun UserCard() {
                     MaterialTheme.typography.subtitle1, color = Color.Black,
                 maxLines = 1
             )
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = stringResource(Res.string.str_visit_your_channel), style =
                     MaterialTheme.typography.subtitle2, color = Color.Blue,

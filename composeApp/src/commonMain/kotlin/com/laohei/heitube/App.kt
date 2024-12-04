@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.laohei.heitube.core.presentation.AdaptiveWindow
 import com.laohei.heitube.core.presentation.NavShape
 import com.laohei.heitube.presentation.component.SideMenuList
@@ -15,6 +16,7 @@ import com.laohei.heitube.presentation.component.SideMenuRail
 import com.laohei.heitube.presentation.component.TuBeTopBar
 import com.laohei.heitube.presentation.component.TuBeTopBarAction
 import com.laohei.heitube.presentation.home.HomePage
+import com.laohei.heitube.presentation.subscription.SubscriptionPage
 import com.laohei.heitube.ui.theme.FontSans
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -53,7 +55,10 @@ fun App() {
                 },
                 drawerShape = NavShape(260.dp, 0f),
                 drawerContent = {
-                    SideMenuList(paddingValues = PaddingValues(vertical = 15.dp))
+                    SideMenuList(
+                        paddingValues = PaddingValues(vertical = 15.dp),
+                        navigateToRoute = {}
+                    )
                 }
             ) {
 //                Column {
@@ -69,7 +74,9 @@ fun App() {
 
                         AdaptiveWindow.Large -> {
                             if (isExpend) {
-                                SideMenuList()
+                                SideMenuList(
+                                    navigateToRoute = { screen -> navController.navigate(screen) }
+                                )
                             } else {
                                 SideMenuRail()
                             }
@@ -87,6 +94,7 @@ fun App() {
                             startDestination = Screen.Home
                         ) {
                             composable<Screen.Home> { HomePage(count = count) }
+                            composable<Screen.Subscription> { SubscriptionPage(subscription = it.toRoute<Screen.Subscription>()) }
                         }
                     }
                 }
