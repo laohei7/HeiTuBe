@@ -159,7 +159,7 @@ private fun VideoCard(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.width(width = 260.dp)
+        modifier = Modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
@@ -167,37 +167,35 @@ private fun VideoCard(
                 onClick(HomeAction.VideoAction)
             }
             .pointerHoverIcon(PointerIcon.Hand),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-//        if (isPreview) {
-//            if (videoInfo!!.dash != null) {
-//                VideoPlayer(url = videoInfo.dash!!.video.first().backupUrl.first())
-//            }
-//
-//        } else {
-//
-//        }
-
-        Box {
-            AsyncImage(
-                model = videoItem.pic,
-                contentDescription = videoItem.bvid,
-                modifier = Modifier.fillMaxWidth().height(180.dp)
+        BoxWithConstraints {
+            val dynamicHeight = maxWidth * (9f / 16f)
+            Box(
+                modifier = Modifier.fillMaxWidth().height(dynamicHeight)
                     .clip(RoundedCornerShape(10.dp)),
-                alignment = Alignment.Center,
-                contentScale = ContentScale.FillBounds,
-            )
+            ) {
+                AsyncImage(
+                    model = videoItem.pic,
+                    contentDescription = videoItem.bvid,
+                    modifier = Modifier.fillMaxSize(),
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.FillBounds,
+                )
 
-            Text(
-                text = videoItem.duration.formatTimeString(),
-                style = MaterialTheme.typography.caption,
-                color = Color.White,
-                modifier = Modifier.align(Alignment.BottomEnd).padding(end = 10.dp, bottom = 10.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(Color.Black.copy(alpha = 0.5f))
-                    .padding(5.dp)
-            )
+                Text(
+                    text = videoItem.duration.formatTimeString(),
+                    style = MaterialTheme.typography.caption,
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(end = 10.dp, bottom = 10.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .padding(5.dp)
+                )
+            }
         }
+
+
 
 
         Box(

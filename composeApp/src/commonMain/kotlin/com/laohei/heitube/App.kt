@@ -1,7 +1,13 @@
 package com.laohei.heitube
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Typography
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,7 +36,7 @@ fun App() {
         BoxWithConstraints {
             val adaptiveWindow = AdaptiveWindow.adaptive(maxWidth)
             var isExpend by remember { mutableStateOf(true) }
-//            val lo = maxWidth
+            val lo = maxWidth
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
             val navController = rememberNavController()
@@ -85,9 +91,9 @@ fun App() {
 
                     BoxWithConstraints {
                         val count = when (adaptiveWindow) {
-                            AdaptiveWindow.Small -> if (maxWidth > 700.dp) 3 else if (maxWidth > 500.dp) 2 else 1
-                            AdaptiveWindow.Middle -> if (maxWidth > 1000.dp) 4 else 3
-                            AdaptiveWindow.Large -> if (maxWidth > 1270.dp || !isExpend) 5 else 4
+                            AdaptiveWindow.Small -> if (maxWidth > 700.dp) 2 else 1
+                            AdaptiveWindow.Middle -> if (maxWidth > 1100.dp) 3 else 2
+                            AdaptiveWindow.Large -> if (maxWidth > 1490.dp) 5 else if (maxWidth > 1300.dp) 4 else 3
                         }
                         NavHost(
                             navController = navController,
@@ -96,6 +102,12 @@ fun App() {
                             composable<Screen.Home> { HomePage(count = count) }
                             composable<Screen.Subscription> { SubscriptionPage(subscription = it.toRoute<Screen.Subscription>()) }
                         }
+//                        Text(
+//                            text = maxWidth.toString(),
+//                            color = Color.Yellow,
+//                            modifier = Modifier.background(Color.Black)
+//                        )
+
                     }
                 }
             }
