@@ -19,7 +19,7 @@ data class VideoInfo(
     @SerialName("seek_param") val seekParam: String = "",
     @SerialName("seek_type") val seekType: String = "",
     val durl: List<Durl> = emptyList(),
-    val dash: Dash?=null,
+    val dash: Dash? = null,
     @SerialName("support_formats") val supportFormats: List<SupportFormat> = emptyList(),
     @SerialName("high_format") val highFormat: String? = null,
     @SerialName("last_play_time") val lastPlayTime: Int = 0,
@@ -46,7 +46,7 @@ data class SupportFormat(
     @SerialName("new_description") val newDescription: String,
     @SerialName("display_desc") val displayDesc: String,
     val superscript: String,
-    val codecs: List<String> = emptyList()
+    val codecs: List<String>? = null
 )
 
 @Serializable
@@ -70,19 +70,19 @@ data class MultiSceneArgs(
 
 @Serializable
 data class Dash(
-    val duration: Int,
-    @SerialName("min_buffer_time") val minBufferTime: Double,
-    val video: List<Video>,
-    val audio: List<Audio>,
-    val dolby: Dolby,
+    val duration: Int = 0,
+    @SerialName("min_buffer_time") val minBufferTime: Double = 0.0,
+    val video: List<Video> = emptyList(),
+    val audio: List<Audio> = emptyList(),
+    val dolby: Dolby? = null,
     val flac: String? = null
 )
 
 @Serializable
 data class Video(
     val id: Int,
-    @SerialName("base_url") val baseUrl: String,
-    @SerialName("backup_url") val backupUrl: List<String>,
+    @SerialName("base_url") val baseUrl: String? = null,
+    @SerialName("backup_url") val backupUrl: List<String> = emptyList(),
     val bandwidth: Int,
     @SerialName("mime_type") val mimeType: String,
     val codecs: String,
@@ -98,8 +98,8 @@ data class Video(
 @Serializable
 data class Audio(
     val id: Int,
-    @SerialName("base_url") val baseUrl: String,
-    @SerialName("backup_url") val backupUrl: List<String>,
+    @SerialName("base_url") val baseUrl: String? = null,
+    @SerialName("backup_url") val backupUrl: List<String> = emptyList(),
     val bandwidth: Int,
     @SerialName("mime_type") val mimeType: String,
     val codecs: String,
@@ -108,7 +108,7 @@ data class Audio(
     @SerialName("frame_rate") val frameRate: String? = null,
     val sar: String? = null,
     @SerialName("start_with_sap") val startWithSap: Int,
-    @SerialName("segment_base") val segmentBase: SegmentBase,
+    @SerialName("segment_base") val segmentBase: SegmentBase? = null,
     val codecid: Int
 )
 

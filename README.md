@@ -16,6 +16,27 @@ https://github.com/laohei7/HeiTuBe.git
 ./gradlew :server:run
 ```
 
+**注意如果需要获取视频 url 先在 server 模块的 resources 中 application.conf 增加你的 bili cookie**
+
+```
+ktor {
+    application {
+        modules = [ "com.laohei.heitube.ApplicationKt.module" ]
+    }
+    deployment {
+        port = 8081
+    }
+    deployment {
+        environment = "development"
+    }
+    bili{
+        cookie = "你的 Cookie"
+    }
+
+}
+
+```
+
 3. 启动 UI 各模块。
 
 ```

@@ -8,9 +8,11 @@ plugins {
 group = "com.laohei.heitube"
 version = "1.0.0"
 application {
-    mainClass.set("com.laohei.heitube.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
 }
+
+
 
 dependencies {
     implementation(projects.shared)
@@ -28,4 +30,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
+
 }

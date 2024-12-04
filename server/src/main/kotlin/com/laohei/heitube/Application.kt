@@ -19,9 +19,10 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
 
-fun main() {
-    embeddedServer(Netty, port = SERVER_PORT, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
+fun main(args: Array<String>) {
+//    embeddedServer(Netty, port = SERVER_PORT, host = "0.0.0.0", module = Application::module)
+//        .start(wait = true)
+    EngineMain.main(args)
 }
 
 fun Application.module() {
@@ -37,6 +38,9 @@ fun Application.module() {
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Get)
     }
+
+    val cookie = environment.config.property("ktor.bili.cookie").getString()
+
 
     val client = HttpClient() {
         install(ContentNegotiation) {
@@ -73,9 +77,12 @@ fun Application.module() {
             val response =
                 client.get(
                     "https://api.bilibili.com/x/player/wbi/playurl?avid=$avid&bvid=$bvid&cid=$cid&qn=0&fnver=0&fnval=4048&fourk=1&gaia_source=&from_client=BROWSER&is_main_page=true&need_fragment=false&isGaiaAvoided=false&session=33e1a32c776a41aa79589202b6de7c07&voice_balance=1&web_location=1315873&dm_img_list=[]&dm_img_str=V2ViR0wgMS4wIChPcGVuR0wgRVMgMi4wIENocm9taXVtKQ&dm_cover_img_str=QU5HTEUgKE5WSURJQSBDb3Jwb3JhdGlvbiwgTlZJRElBIEdlRm9yY2UgR1RYIDEwNTAgVGkvUENJZS9TU0UyLCBPcGVuR0wgNC41LjApR29vZ2xlIEluYy4gKE5WSURJQSBDb3Jwb3JhdGlvbi&dm_img_inter=%7B%22ds%22:[],%22wh%22:[4607,4634,61],%22of%22:[28,56,28]%7D&w_rid=f0bf7527e9879001d7a0e4491910d6d8&wts=1733160345"
+//                    "https://api.bilibili.com/x/player/wbi/playurl?avid=$avid&bvid=$bvid&cid=$cid&qn=0"
                 ) {
                     headers.append(HttpHeaders.UserAgent, "K/3.0")
+                    headers.append(HttpHeaders.Cookie, cookie)
                 }
+            println(response.bodyAsText())
             val result = response.body<ApiResponse<VideoInfo>>()
             response.headers.forEach { key, values ->
                 values.forEach { value ->
