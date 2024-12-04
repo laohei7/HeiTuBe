@@ -82,14 +82,14 @@ fun SideMenuList(
         modifier = Modifier.width(260.dp).padding(paddingValues)
     ) {
         items(menus) {
-              SideMenuItem(
+            SideMenuItem(
                 label = it.second,
                 icon = it.first,
                 selected = select == it.first,
                 onClick = { select = it.first }
             )
         }
-        item { Divier() }
+        item { Divider() }
 
         item {
             Row(
@@ -115,7 +115,7 @@ fun SideMenuList(
         }
 
         items(myMenus) {
-              SideMenuItem(
+            SideMenuItem(
                 label = it.second,
                 icon = it.first,
                 selected = select == it.first,
@@ -123,13 +123,13 @@ fun SideMenuList(
             )
         }
 
-        item { Divier() }
+        item { Divider() }
         item { GroupTitle("Subscribe") }
 
-        item { Divier() }
+        item { Divider() }
         item { GroupTitle("Explore") }
-        
-        item { Divier() }
+
+        item { Divider() }
 
         items(otherMenus) {
             SideMenuItem(
@@ -139,7 +139,7 @@ fun SideMenuList(
                 onClick = { select = it.first }
             )
         }
-        item { Divier() }
+        item { Divider() }
 
     }
 }
@@ -180,7 +180,7 @@ private fun SideMenuItem(
 }
 
 @Composable
-fun Divier(
+fun Divider(
     paddingValues: PaddingValues = PaddingValues(horizontal = 15.dp, vertical = 10.dp)
 ) {
     Box(
@@ -198,16 +198,30 @@ fun MenuItem(
     modifier: Modifier = Modifier,
     icon: DrawableResource,
     label: String,
+    tail: DrawableResource? = null
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(20.dp)
+        horizontalArrangement = Arrangement.Start
     ) {
-        Icon(
-            painter = painterResource(icon), contentDescription = null,
-            modifier = Modifier.size(22.dp)
-        )
-        Text(text = label, style = MaterialTheme.typography.subtitle1)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier.weight(1f)
+        ) {
+            Icon(
+                painter = painterResource(icon), contentDescription = null,
+                modifier = Modifier.size(22.dp)
+            )
+            Text(text = label, style = MaterialTheme.typography.subtitle1)
+        }
+        tail?.let {
+            Icon(
+                painter = painterResource(it), contentDescription = null,
+                modifier = Modifier.size(22.dp)
+            )
+        }
+
     }
 }

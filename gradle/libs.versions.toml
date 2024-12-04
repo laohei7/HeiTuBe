@@ -22,7 +22,6 @@ kotlinxSerializationJson = "1.7.3"
 kotlinxDatetime = "0.6.1"
 ktorClientCore = "3.0.0-rc-1"
 coil3 = "3.0.0-rc02"
-uriKmp = "0.0.18"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -85,7 +84,6 @@ ktor = [
 coil = [
     "coil-compose",
     "coil-compose-core",
-#    "coil-network-ktor2",
     "coil-network-ktor3",
     "coil-mp"
 ]
